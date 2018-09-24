@@ -1,0 +1,7 @@
+demo:
+  key_name: modus-demo
+  group: modus-demo
+  region: us-west-1
+  instance_tags:
+    name: modus-demo
+

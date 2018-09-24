@@ -1,0 +1,6 @@
+---
+## Provision an EC2 instance
+- hosts: localhost
+  gather_facts: False
+  roles:
+    - provision-instance

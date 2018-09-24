@@ -1,0 +1,24 @@
+---
+## Terminates the modus-demo EC2 instance.
+
+# Local variables
+- include_vars: vars/main.yml
+
+# Refresh the instance inventory cache.
+- meta: refresh_inventory
+
+- debug: msg="{{ hostvars[inventory_hostname] }}"
+- debug: msg="{{ vars.hostvars }}"
+
+- name: Terminate instances
+  hosts: ec2
+  connection: local
+  tasks:
+    - name: Terminate instances that were previously launched
+      local_action:
+        module: ec2
+        key_name: 'modus-demo'
+        state: 'absent'
+        region: '{{ region }}'
+        instance_ids: '{{ ec2.instance_ids }}'
+

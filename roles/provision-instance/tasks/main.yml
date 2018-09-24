@@ -1,0 +1,39 @@
+---
+## Provision an EC2 instance.
+
+- include_vars: vars/main.yml
+
+- meta: refresh_inventory
+
+- name: Launch an ec2 instance when none exists
+  ec2:
+    key_name: "{{ demo.key_name }}"
+    assign_public_ip: yes
+    region: "{{ demo.region }}"
+    group_id: "{{ demo.sg_group }}"
+    group: "{{ demo.group }}"
+    instance_type: "{{ demo.instance_type }}"
+    image: "{{ demo.image }}"
+    wait: true
+    wait_timeout: 600
+    exact_count: 1
+    count_tag:
+      Name: "{{ demo.instance_tags.name }}"
+    vpc_subnet_id: "{{ demo.vpc_subnet_id}}"
+    instance_tags:
+      Name: "{{ demo.instance_tags.name }}"
+    monitoring: no
+  tags:
+    - new_instance
+  register: ec2
+
+- debug: msg="{{ ec2 }}"
+
+- name: Add new instance to host group
+  add_host: hostname={{ item.public_ip }} groupname={{ demo.group }}
+  with_items: "{{ ec2.instances }}"
+
+- name: Wait for SSH to come up
+  wait_for: host="{{ item.public_dns_name }}" port=22 delay=60 timeout=320 state=started
+  with_items: "{{ ec2.instances }}"
+

@@ -1,0 +1,10 @@
+---
+## Gather and report systemd units on the target host.
+- hosts: ec2
+  gather_facts: False
+  tasks:
+    - name: Output system units and states
+      systemd-units: 
+      register: result
+
+    - debug: msg=result    

@@ -1,0 +1,11 @@
+demo:
+  key_name: modus-demo
+  group: modus-demo
+  instance_type: t2.micro
+  image: ami-3b89905b
+  sg_group: sg-0f5652994ffa39ecd
+  region: us-west-1
+  vpc_subnet_id: subnet-57caf711
+  instance_tags:
+    name: modus-demo
+
