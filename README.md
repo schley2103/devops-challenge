@@ -1,8 +1,6 @@
 # modus-demo
 Repo for the ModusBox challenge
 
-# Sr. DevOps Engineer Coding Test
-
 The goal of this challenge is to understand how you think about and approach problems through code. The solution you produce should be an example of your best work and should demonstrate community best practices for the tools and languages involved.
 
 ## Requirements
@@ -17,15 +15,15 @@ The returned data structure should be a list of dictionaries each containing two
 
         "unit": "docker.socket",
 
-        &quot;state&quot;: &quot;enabled&quot;
+        "state": "enabled"
 
     },
 
     {
 
-        &quot;unit&quot;: &quot;docker.service&quot;,
+        "unit": "docker.service",
 
-        &quot;state&quot;: &quot;enabled&quot;
+        "state": "enabled"
 
     }
 
