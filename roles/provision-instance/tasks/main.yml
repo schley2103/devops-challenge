@@ -27,7 +27,7 @@
     - new_instance
   register: ec2
 
-- debug: msg="{{ ec2 }}"
+#- debug: msg="{{ ec2 }}"
 
 - name: Add new instance to host group
   add_host: hostname={{ item.public_ip }} groupname={{ demo.group }}
