@@ -1,6 +1,7 @@
 ---
 ## Provision an EC2 instance
 - hosts: localhost
+  connection: local
   gather_facts: False
   roles:
     - provision-instance
