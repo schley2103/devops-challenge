@@ -21,9 +21,13 @@ RUN echo "Adding Build dependencies..." && \
       openssl \
       python-dev && \
     \
+    \
     echo "Installing Python..." && \
     apk add --no-cache ${PACKAGES} && \
+    echo "Upgrading pip..." && \
+    pip install --upgrade pip && \
     pip install docker-py && \
+    pip install boto3 && \
     \
     echo "Installing Ansible..." && \
     pip install ansible==${ANSIBLE_VERSION} && \
