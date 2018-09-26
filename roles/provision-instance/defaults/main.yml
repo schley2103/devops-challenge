@@ -1,0 +1,7 @@
+# Variables common to all roles.
+
+group: modus
+region: us-west-1
+instance_tags:
+  name: modus
+
