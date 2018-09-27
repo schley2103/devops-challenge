@@ -25,6 +25,7 @@
     image: "{{ image }}"
     region: "{{ region }}"
     group: "{{ group }}"
+    key_name: "{{ key_name }}"
     exact_count: 1
     count_tag:
       Name: "{{ instance_tags.name }}"
@@ -36,7 +37,10 @@
         delete_on_termination: true
     wait: true
     wait_timeout: 600
+  tags: 
+    - new_instance
   register: ec2
+
 - debug: msg="Instance {{ instance_tags.name }} metadata is {{ ec2 }}"
 
 - name: Add the newly created host to inventory
