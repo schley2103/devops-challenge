@@ -3,16 +3,17 @@
 
 # Make sure we have an EC2 instance running.
 - hosts: localhost
-  roles: 
+  roles:
     - provision-instance
 
 # Gather systemd units.
 - hosts: ec2
-  gather_facts: False
-
+  gather_facts: false
   tasks:
     - name: Output system units and states
-      systemd-units: 
-      register: result
+      systemd_units:
+        command: list_units
+      register: units
 
-    - debug: msg=result    
+    - debug: msg="{{ units.message }}"
+
