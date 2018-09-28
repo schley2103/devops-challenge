@@ -53,7 +53,7 @@ def run_module():
         for unit in list_units():
             id = get_property(unit, "Id")
             state = get_property(unit, "ActiveState")
-            units.append({"unit": str(id), "state": str(state)})
+            units.append({"unit": id, "state": state})
     except dbus.exceptions.DBusException as error:
         error.get_dbus_name()
         error.get_dbus_message()
