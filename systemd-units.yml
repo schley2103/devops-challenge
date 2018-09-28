@@ -3,6 +3,7 @@
 
 # Make sure we have an EC2 instance running.
 - hosts: localhost
+  gather_facts: false
   roles:
     - provision-instance
 
