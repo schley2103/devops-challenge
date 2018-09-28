@@ -42,6 +42,12 @@ docker run\
  -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY\
  --rm -it -v $(pwd):/ansible ansible-playbook systemd-units.yml
 
+# Alternative systemctl, using only the Python standard library.
+docker run\
+ -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID\
+ -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY\
+ --rm -it -v $(pwd):/ansible ansible-playbook systemctl.yml
+
 # Tear it all down.
 docker run\
  -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID\
