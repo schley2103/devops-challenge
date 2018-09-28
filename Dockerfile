@@ -21,11 +21,11 @@ RUN echo "Adding Build dependencies..." && \
       openssl \
       python-dev && \
     \
-    \
     echo "Installing Python..." && \
     apk add --no-cache ${PACKAGES} && \
     echo "Upgrading pip..." && \
     pip install --upgrade pip && \
+    echo "Installing Docker and boto3..." && \
     pip install docker-py && \
     pip install boto3 && \
     \
@@ -36,10 +36,8 @@ RUN echo "Adding Build dependencies..." && \
     apk del build-dependencies && \
     rm -rf /var/cache/apk/* && \
     \
-    echo "Adding hosts for convenience..." && \
+    echo "Creating folders..." && \
     mkdir -p /etc/ansible /ansible
-
-#RUN ansible -i ./ansible/inventory/ec2.py -u centos all -m ping
 
 ENV ANSIBLE_SCP_IF_SSH=y
 ENV PATH /ansible/bin:$PATH
@@ -50,8 +48,9 @@ ENV ANSIBLE_SSH_PIPELINING True
 ENV ANSIBLE_HOST_KEY_CHECKING false
 ENV ANSIBLE_RETRY_FILES_ENABLED false
 ENV ANSIBLE_GATHERING smart
+ENV ANSIBLE_KEEP_REMOTE_FILES 1
 
 WORKDIR /ansible
 
 ENTRYPOINT ["ansible-playbook", "-i", "/ansible/inventory/ec2.py"]
-#CMD ["ansible-playbook", "-i", "/ansible/inventory/ec2.py"]
+CMD ["ansible-playbook", "-i", "/ansible/inventory/ec2.py"]
