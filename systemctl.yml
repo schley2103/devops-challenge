@@ -1,0 +1,20 @@
+---
+## Gather and report systemd units on the target host.
+
+# Make sure we have an EC2 instance running.
+- hosts: localhost
+  gather_facts: false
+  roles:
+    - provision-instance
+
+# Gather systemd units.
+- hosts: ec2
+  gather_facts: false
+  tasks:
+    - name: Output system units and states
+      systemctl:
+        command: list_units
+      register: units
+
+    - debug: msg="{{ units.message }}"
+
