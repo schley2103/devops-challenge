@@ -2,5 +2,5 @@
 
 instance_type: t2.micro
 image: ami-3b89905b
-key_name: modus-demo
+key_name: modus
 
