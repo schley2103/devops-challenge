@@ -37,20 +37,21 @@ RUN echo "Adding Build dependencies..." && \
     rm -rf /var/cache/apk/* && \
     \
     echo "Adding hosts for convenience..." && \
-    mkdir -p /etc/ansible /ansible && \
-    echo "[local]" >> /etc/ansible/hosts && \
-    echo "localhost" >> /etc/ansible/hosts
+    mkdir -p /etc/ansible /ansible
 
+#RUN ansible -i ./ansible/inventory/ec2.py -u centos all -m ping
+
+ENV ANSIBLE_SCP_IF_SSH=y
 ENV PATH /ansible/bin:$PATH
 ENV PYTHONPATH /ansible/lib
-ENV ANSIBLE_ROLES_PATH /ansible/playbooks/roles
+ENV ANSIBLE_ROLES_PATH /ansible/roles
 ENV ANSIBLE_LIBRARY /ansible/library
 ENV ANSIBLE_SSH_PIPELINING True
 ENV ANSIBLE_HOST_KEY_CHECKING false
 ENV ANSIBLE_RETRY_FILES_ENABLED false
 ENV ANSIBLE_GATHERING smart
 
-WORKDIR /ansible/playbooks
+WORKDIR /ansible
 
-ENTRYPOINT ["ansible-playbook"]
-
+ENTRYPOINT ["ansible-playbook", "-i", "/ansible/inventory/ec2.py"]
+#CMD ["ansible-playbook", "-i", "/ansible/inventory/ec2.py"]
