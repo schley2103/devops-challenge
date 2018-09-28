@@ -4,8 +4,8 @@
 #
 # My setup:
 #   I have ec2.py installed under inventory/.
-#   A Dockerfile defines my ansible-playbook.
-#   Required by ec2.py: my EC2 API credentials are in my environment.
+#   A Dockerfile defines my ansible-playbook executable.
+#   Required by ec2.py: EC2 API credentials in the environment.
 #   Inventory manages EC2 machines based on the "modus" group and tag.
 #
 
@@ -16,7 +16,6 @@ docker build . -t ansible-playbook
 docker run --rm -it -v $(pwd) ansible-playbook --version
 
 # Provision a CentOS host on EC2.
-#local#ansible-playbook -t inventory/ec2.py provision-ec2.yml
 # Note: my EC2 credentials are in my local environment. Set your own.
 docker run\
  -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID\
@@ -24,12 +23,12 @@ docker run\
  --rm -it -v $(pwd):/ansible ansible-playbook provision-ec2.yml
 
 # Just checking...
-ansible -i inventory/ec2.py -u centos all -m ping
 inventory/ec2.py --list --profile default --refresh-cache | grep ec2_state.*running
 if [ $? == 0 ]
 then
   echo "Instance is running"
 fi
+ansible -i inventory/ec2.py -u centos all -m ping
 
 # Run the systemd-units playbook.
 docker run\
@@ -49,21 +48,20 @@ docker run\
  -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY\
  --rm -it -v $(pwd):/ansible ansible-playbook terminate-ec2.yml
 
-###
-# DEBUGGING
-###
-# Run an ssh keypair while the playbook is playing.
-docker run --rm -it -v ~/.ssh/id_rsa:/root/.ssh/id_rsa \
-    -v ~/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub \
-    -v $(pwd):/ansible \
-    ansible-playbook provision-ec2.yml
+#
+# Helpers:
+#
+# docker run --rm -it -v $(pwd):/ansible ansible-playbook wait.yml
+# cid=$(docker ps | tail -1 | cut -f1 -d' ')
+# docker exec -it $cid /bin/bash
+#
 
 #
-# What I have learned:
+# Footnote: what I have learned:
 #
-How to manage dynamic inventory in Ansible.
-How to package ansible-playbook as a Docker image.
-Systemd and parts of the D-Bus API.
-A bunch of Python tricks.
-About Ansible roles.
+# How to manage dynamic inventory in Ansible.
+# How to package ansible-playbook as a Docker image.
+# Systemd and parts of the D-Bus API.
+# A bunch of Python tricks.
+# About Ansible roles.
 
