@@ -35,6 +35,7 @@
       - device_name: "/dev/sda1"
         volume_size: 8
         delete_on_termination: true
+    monitoring: yes
     wait: true
     wait_timeout: 600
   tags: 
@@ -42,6 +43,28 @@
   register: ec2
 
 - debug: msg="Instance {{ instance_tags.name }} metadata is {{ ec2 }}"
+# ec2["tagged_instances"][0]["id"]
+
+#- name: Create an alarm to recover the instance
+#  ec2_metric_alarm:
+#    state: present
+#    region: "{{ region }}"
+#    name: "recoverModus"
+#    metric: "StatusCheckFailed_System"
+#    namespace: "AWS/EC2"
+#    statistic: "Minimum"
+#    comparison: ">="
+#    threshold: 1.0
+#    period: 60
+#    evaluation_periods: 1
+#    unit: "Seconds"
+#    description: "This will recover the modus instance when it terminates"
+#    dimensions: {"Name": "InstanceId", "Value":  ec2.tagged_instances.id }
+##    dimensions: {"Name": "Alarm", "Value": "recoverModus" }
+#    alarm_actions: ["recover"]
+#  register: alarm
+#
+#- debug: msg="Alarm is {{ alarm }}"
 
 - name: Add the newly created host to inventory
   add_host:
