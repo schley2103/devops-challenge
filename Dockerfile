@@ -3,40 +3,24 @@ FROM alpine:3.8
 
 ENV ANSIBLE_VERSION 2.6
 
-ENV PACKAGES \
-  bash \
-  curl \
-  openssh-client \
-  sshpass \
-  python \
-  py-boto \
-  py-jinja2 \
-  py-paramiko \
-  py-setuptools \
-  py-pip \
-  py-yaml
+ENV PACKAGES python py-pip
+ENV DEPENDENCIES py-boto py-paramiko
 
-RUN echo "Adding Build dependencies..." && \
-    apk --update add --virtual build-dependencies \
-      openssl \
-      python-dev && \
+RUN echo "====> Adding Build dependencies..." && \
+    apk --update add --virtual build-dependencies $DEPENDENCIES && \
     \
-    echo "Installing Python..." && \
-    apk add --no-cache ${PACKAGES} && \
-    echo "Upgrading pip..." && \
-    pip install --upgrade pip && \
-    echo "Installing Docker and boto3..." && \
-    pip install docker-py && \
-    pip install boto3 && \
+    echo "====> Installing Python..." && \
+    apk add --no-cache $PACKAGES && \
     \
-    echo "Installing Ansible..." && \
+    echo "====> Upgrading pip..." && \
+    pip install --upgrade pip  && \
+    \
+    echo "====> Installing ansible..." && \
     pip install ansible==${ANSIBLE_VERSION} && \
+    pip install boto3 # Required by the ec2_group module && \
     \
-    echo "Cleaning up." && \
-    apk del build-dependencies && \
+    echo "====> Cleaning up..." && \
     rm -rf /var/cache/apk/* && \
-    \
-    echo "Creating folders..." && \
     mkdir -p /etc/ansible /ansible
 
 ENV ANSIBLE_SCP_IF_SSH=y
