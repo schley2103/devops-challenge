@@ -30,19 +30,13 @@ then
 fi
 ansible -i inventory/ec2.py -u centos all -m ping
 
-# Run the systemd-units playbook.
+# Output a list of units and their statuses.
 docker run\
  -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID\
  -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY\
  --rm -it -v $(pwd):/ansible ansible-playbook systemd-units.yml
 
-# Do it again to check idempotency.
-docker run\
- -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID\
- -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY\
- --rm -it -v $(pwd):/ansible ansible-playbook systemd-units.yml
-
-# Alternative systemctl, using only the Python standard library.
+# Alternate list-units method (uses only the Python standard library).
 docker run\
  -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID\
  -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY\
