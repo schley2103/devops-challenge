@@ -33,3 +33,9 @@
       register: ec2_group
     - debug: msg="Security group {{ ec2_group.group_id }} has been removed"
 
+    - name: Remove the alarm
+      ec2_metric_alarm:
+        state: absent
+        region: "{{ region }}"
+        name: "recover-modus"
+

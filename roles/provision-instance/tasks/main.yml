@@ -43,39 +43,39 @@
   register: ec2
 
 - debug: msg="Instance {{ instance_tags.name }} metadata is {{ ec2 }}"
-# ec2["tagged_instances"][0]["id"]
+- debug: msg="Tagged instance ID is {{ ec2.tagged_instances[0].id }}"
 
-#- name: Create an alarm to recover the instance
-#  ec2_metric_alarm:
-#    state: present
-#    region: "{{ region }}"
-#    name: "recoverModus"
-#    metric: "StatusCheckFailed_System"
-#    namespace: "AWS/EC2"
-#    statistic: "Minimum"
-#    comparison: ">="
-#    threshold: 1.0
-#    period: 60
-#    evaluation_periods: 1
-#    unit: "Seconds"
-#    description: "This will recover the modus instance when it terminates"
-#    dimensions: {"Name": "InstanceId", "Value":  ec2.tagged_instances.id }
-##    dimensions: {"Name": "Alarm", "Value": "recoverModus" }
-#    alarm_actions: ["recover"]
-#  register: alarm
-#
-#- debug: msg="Alarm is {{ alarm }}"
+- name: Create an alarm to recover the instance
+  ec2_metric_alarm:
+    state: present
+    region: "{{ region }}"
+    name: "recover-modus"
+    metric: "StatusCheckFailed_System"
+    namespace: "AWS/EC2"
+    statistic: "Minimum"
+    comparison: ">="
+    threshold: 1.0
+    period: 60
+    evaluation_periods: 2
+    unit: "Seconds"
+    description: "This will recover the modus instance when it terminates"
+    dimensions: { "InstanceId":"{{ item.id }}" }
+    alarm_actions: ["arn:aws:automate:{{ region }}:ec2:recover"]
+  with_items: "{{ ec2.tagged_instances }}"
+  register: alarm
+
+- debug: msg="Alarm is {{ alarm }}"
 
 - name: Add the newly created host to inventory
   add_host:
     name: "{{ item.public_ip }}"
     groups: "{{ group }}"
-  with_items: "{{ ec2.instances }}"
+  with_items: "{{ ec2.tagged_instances }}"
 
 - name: Wait for SSH to come up
   wait_for:
     host: "{{ item.public_ip }}"
     port: 22
     state: started
-  with_items: "{{ ec2.instances }}"
+  with_items: "{{ ec2.tagged_instances }}"
 
