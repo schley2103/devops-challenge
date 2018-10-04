@@ -1,5 +1,5 @@
-# modus-demo
-Repo for the ModusBox challenge
+# DevOps Challenge
+A DevOps coding challenge
 
 The goal of this challenge is to understand how you think about and approach problems through code. The solution you produce should be an example of your best work and should demonstrate community best practices for the tools and languages involved.
 
@@ -29,7 +29,7 @@ The returned data structure should be a list of dictionaries each containing two
 
 ]
 
-## Notes
+## Other Requirements
 
 - The solution for the test should be delivered as a link to a public GitHub repository containing the project.
 - The project should contain a working Dockerfile that builds the solution.
