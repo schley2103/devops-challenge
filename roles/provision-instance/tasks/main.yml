@@ -17,7 +17,10 @@
         cidr_ip: 0.0.0.0/0
         rule_desc: "All ssh from any"
   register: ec2_group
-- debug: msg="Security group {{ ec2_group.group_id }} has rules {{ ec2_group.ip_permissions }}"
+
+- debug:
+    msg: "Security group {{ ec2_group.group_id }} has rules {{ ec2_group.ip_permissions }}"
+    verbosity: 2
 
 - name: Launch an instance
   ec2:
@@ -42,8 +45,18 @@
     - new_instance
   register: ec2
 
-- debug: msg="Instance {{ instance_tags.name }} metadata is {{ ec2 }}"
-- debug: msg="Tagged instance ID is {{ ec2.tagged_instances[0].id }}"
+- name: Add the newly created host to inventory
+  add_host:
+    name: "{{ item.public_ip }}"
+    groups: "{{ group }}"
+  with_items: "{{ ec2.tagged_instances }}"
+
+- debug:
+    msg: "Instance {{ instance_tags.name }} metadata is {{ ec2 }}"
+    verbosity: 2
+
+- debug:
+    msg: "Tagged instance ID is {{ ec2.tagged_instances[0].id }}"
 
 - name: Create an alarm to recover the instance
   ec2_metric_alarm:
@@ -64,13 +77,9 @@
   with_items: "{{ ec2.tagged_instances }}"
   register: alarm
 
-- debug: msg="Alarm is {{ alarm }}"
-
-- name: Add the newly created host to inventory
-  add_host:
-    name: "{{ item.public_ip }}"
-    groups: "{{ group }}"
-  with_items: "{{ ec2.tagged_instances }}"
+- debug:
+    msg: "Alarm is {{ alarm }}"
+    verbosity: 2
 
 - name: Wait for SSH to come up
   wait_for:

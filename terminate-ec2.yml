@@ -14,7 +14,9 @@
         filters:
           "tag:Name": "{{ instance_tags.name }}"
       register: ec2
-    - debug: msg="Instance_id is {{ ec2.instances[0]['instance_id'] }}"
+
+    - debug:
+        msg: "Terminating instance id {{ ec2.instances[0]['instance_id'] }}"
 
     - name: Terminate EC2 Instance(s)
       ec2:
@@ -31,7 +33,9 @@
         state: absent
         region: "{{ region }}"
       register: ec2_group
-    - debug: msg="Security group {{ ec2_group.group_id }} has been removed"
+
+    - debug:
+        msg: "Security group {{ ec2_group.group_id }} has been removed"
 
     - name: Remove the alarm
       ec2_metric_alarm:
