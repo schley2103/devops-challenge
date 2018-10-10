@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Driver script for the Modus demo.
+# Driver script for the devops challenge.
 #
 # My setup:
 #   I have ec2.py installed under inventory/.
