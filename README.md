@@ -1,37 +1,28 @@
 # DevOps Challenge
 A DevOps coding challenge
 
-The goal of this challenge is to understand how you think about and approach problems through code. The solution you produce should be an example of your best work and should demonstrate community best practices for the tools and languages involved.
+The goal of this exercise is to demonstrate how I think about and approach problems through code. The solution is be an example of my work and demonstrates community best practices for the tools and languages involved.
 
 ## Requirements
 
-Create a containerized Ansible project that provisions a Linux VM running in Amazon Web Services. Once provisioned, the Ansible project should execute a custom Ansible module that you&#39;ll create for this test that returns a list of installed _systemd_ units and their current state.
+Create a containerized Ansible project that provisions a Linux VM running in Amazon Web Services. Once provisioned, the Ansible project should execute a custom Ansible module created for this exercise that returns a list of installed _systemd_ units and their current state.
 
 The returned data structure should be a list of dictionaries each containing two keys representing the name of the unit file and the current state. For example:
 
 [
-
     {
-
         "unit": "docker.socket",
-
         "state": "enabled"
-
     },
-
     {
-
         "unit": "docker.service",
-
         "state": "enabled"
-
     }
-
 ]
 
 ## Other Requirements
 
-- The solution for the test should be delivered as a link to a public GitHub repository containing the project.
+- The solution should be delivered as a link to a public GitHub repository containing the project (you are here).
 - The project should contain a working Dockerfile that builds the solution.
 - The project should have three playbooks:
   - A playbook to provision the VM and any other resources needed
