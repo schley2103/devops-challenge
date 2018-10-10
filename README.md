@@ -10,14 +10,23 @@ Create a containerized Ansible project that provisions a Linux VM running in Ama
 The returned data structure should be a list of dictionaries each containing two keys representing the name of the unit file and the current state. For example:
 
 [
+
     {
+    
         "unit": "docker.socket",
+        
         "state": "enabled"
+        
     },
+    
     {
+    
         "unit": "docker.service",
+        
         "state": "enabled"
+        
     }
+    
 ]
 
 ## Other Requirements
@@ -39,3 +48,5 @@ The returned data structure should be a list of dictionaries each containing two
 - The project should require no existing AWS resources other than an AWS account with valid credentials and permissions.
 - Using roles and other Ansible best practices for project layout is highly encouraged.
 - Throughout the project, pay particular attention to modularizing repetitive code with an eye toward producing the most readable and elegant solution possible.
+
+To run through this exercise, follow along with the commands in demo.sh. Enjoy!
